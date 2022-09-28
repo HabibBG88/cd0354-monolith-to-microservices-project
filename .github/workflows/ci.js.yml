@@ -17,5 +17,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - run: docker-compose -f docker-compose-build.yaml build --parallel
+    - run: docker tag udagram-api-feed habib88/udagram-api-feed:v1
+    - run: docker tag udagram-api-user habib88/udagram-api-user:v1
+    - run: docker tag udagram-frontend:local  habib88/udagram-frontend:v1
+    - run: docker tag reverseproxy habib88/reverseproxy:v1
+    - run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+    - run: docker push habib88/udagram-api-feed:v1
+    - run: docker push habib88/udagram-api-user:v1
+    - run: docker push habib88/udagram-frontend:v1
+    - run: docker push habib88/reverseproxy:v1
 
-    - run: echo "Hello world from the first Github Actions Pipeline"
+
